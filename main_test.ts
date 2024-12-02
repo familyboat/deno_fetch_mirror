@@ -1,6 +1,13 @@
 import { assertEquals } from "@std/assert";
-import { add } from "./main.ts";
+import { getName } from "./main.ts";
 
 Deno.test(function addTest() {
-  assertEquals(add(2, 3), 5);
+  const downloadUrl =
+    `https://github.com/denoland/deno/releases/download/v2.1.2deno-x86_64-unknown-linux-gnu.zip`;
+
+  const { archiveName, denoName } = getName(downloadUrl);
+
+  assertEquals(archiveName, "v2.1.2deno-x86_64-unknown-linux-gnu.zip");
+
+  assertEquals(denoName, "deno");
 });
