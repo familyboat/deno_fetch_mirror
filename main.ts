@@ -47,7 +47,9 @@ async function upgrade(downloadUrl: string): Promise<void> {
     console.error(`unzip error: ${result.stderr}`);
   }
 
-  await Deno.remove(tmpDir);
+  await Deno.remove(tmpDir, {
+    recursive: true,
+  });
 }
 
 function showHelp() {
