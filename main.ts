@@ -1,26 +1,44 @@
-import { basename, join } from "@std/path";
+import { basename, extname, join } from "@std/path";
 import { which } from "@david/which";
 import { $ } from "@david/dax";
 import { parseArgs } from "@std/cli";
 
+/**
+ * 从 downloadUrl 中获取：文件名，可执行文件的名称，文件名的主干部分。
+ */
 export function getName(
   downloadUrl: string,
-): { archiveName: string; denoName: string } {
+): { 
+  archiveName: string; 
+  denoName: string;
+  stem: string;
+} {
   const pathname = new URL(downloadUrl).pathname;
   const archiveName = basename(pathname);
+  const ext = extname(pathname);
+  const stem = basename(pathname, ext);
 
-  return { archiveName, denoName: "deno" };
+  return { archiveName, denoName: "deno", stem };
 }
+
+const cacheRootDir = '/tmp';
+const cacheDirPrefix = 'deno_fetch_mirror';
+
+const fakeUrl = 'https://fake-url.deno.dev?url=';
 
 /**
  * @param downloadUrl
  */
 async function upgrade(downloadUrl: string): Promise<void> {
-  const { archiveName, denoName } = getName(downloadUrl);
-  const mirror = `https://fake-url.deno.dev?url=${downloadUrl}`;
+  const { archiveName, denoName, stem } = getName(downloadUrl);
+  const mirror = `${fakeUrl}${downloadUrl}`;
 
   const response = await fetch(mirror);
-  const tmpDir = await Deno.makeTempDir();
+  const tmpDir = await Deno.makeTempDir({
+    dir: cacheRootDir,
+    prefix: cacheDirPrefix,
+    suffix: stem,
+  });
   const tmpArchive = join(tmpDir, archiveName);
   const tmpDeno = join(tmpDir, denoName);
   await Deno.writeFile(tmpArchive, await response.bytes());
