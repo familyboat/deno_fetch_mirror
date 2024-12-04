@@ -1,29 +1,28 @@
-import { basename, extname, join } from "@std/path";
+import { basename, join } from "@std/path";
 import { which } from "@david/which";
 import { $ } from "@david/dax";
-import { parseArgs } from "@std/cli";
 import {CurrentOS} from '@cross/runtime';
+import { Command } from 'commander';
 
 /**
- * 从 downloadUrl 中获取：文件名，可执行文件的名称，文件名的主干部分。
+ * 从 downloadUrl 中获取：文件名，可执行文件的名称。
  */
 export function getName(
   downloadUrl: string,
 ): { 
   archiveName: string; 
   denoName: string;
-  stem: string;
 } {
   const pathname = new URL(downloadUrl).pathname;
   const archiveName = basename(pathname);
-  const ext = extname(pathname);
-  const stem = basename(pathname, ext);
 
-  return { archiveName, denoName: "deno", stem };
+  return { archiveName, denoName: "deno"};
 }
 
+const program = 'deno_fetch_mirror';
+
 const cacheRootDir = '/tmp';
-const cacheDirPrefix = 'deno_fetch_mirror';
+const cacheDirPrefix = `${program}_`;
 
 const fakeUrl = 'https://fake-url.deno.dev?url=';
 
@@ -31,14 +30,13 @@ const fakeUrl = 'https://fake-url.deno.dev?url=';
  * @param downloadUrl
  */
 async function upgrade(downloadUrl: string): Promise<void> {
-  const { archiveName, denoName, stem } = getName(downloadUrl);
+  const { archiveName, denoName } = getName(downloadUrl);
   const mirror = `${fakeUrl}${downloadUrl}`;
 
   const response = await fetch(mirror);
   const tmpDir = await Deno.makeTempDir({
     dir: cacheRootDir,
     prefix: cacheDirPrefix,
-    suffix: stem,
   });
   const tmpArchive = join(tmpDir, archiveName);
   const tmpDeno = join(tmpDir, denoName);
@@ -50,7 +48,7 @@ async function upgrade(downloadUrl: string): Promise<void> {
     const pathToDeno = await which("deno");
 
     if (pathToDeno) {
-      const result = await $`cp ${tmpDeno} ${pathToDeno}`;
+      const result = await $`mv ${tmpDeno} ${pathToDeno}`;
 
       if (result.code === 0) {
         console.log(`Upgrading deno successed!`);
@@ -67,13 +65,16 @@ async function upgrade(downloadUrl: string): Promise<void> {
   }
 }
 
-function showHelp() {
-  console.log(`Upgrade deno:
-
-usage:
-
-deno_upgrade --url <downloadUrl>
-`);
+async function clean() {
+  for await(const dirEntry of Deno.readDir(cacheRootDir)) {
+    if (dirEntry.isDirectory && dirEntry.name.startsWith(cacheDirPrefix)) {
+      const fullpath = join(cacheRootDir, dirEntry.name);
+      console.log(`Clean up ${fullpath}`);
+      await Deno.remove(fullpath, {
+        recursive: true
+      })
+    }
+  }
 }
 
 // Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
@@ -83,12 +84,18 @@ if (import.meta.main) {
     Deno.exit(1);
   }
 
-  const args = Deno.args;
-  const { url } = parseArgs(args);
+  const cli = new Command();
+  cli.name(program)
+  .description('Fetch deno from mirror.');
 
-  if (url) {
-    await upgrade(url);
-  } else {
-    showHelp();
-  }
+  cli.command('clean')
+  .description('Clean up the cache')
+  .action(clean)
+
+  cli.command('upgrade')
+  .description('Upgrade deno')
+  .argument('<url>', 'Url for specified deno version')
+  .action(upgrade);
+
+  cli.parse();
 }
