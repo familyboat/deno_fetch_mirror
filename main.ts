@@ -7,7 +7,6 @@ import { getName } from "./util.ts";
 import json from "./deno.json" with { type: "json" };
 
 const program = "deno_fetch_mirror";
-
 const cacheRootDir = "/tmp";
 const cacheDirPrefix = `${program}_`;
 
