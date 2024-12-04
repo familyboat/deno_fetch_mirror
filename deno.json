@@ -6,7 +6,15 @@
   "tasks": {
     "dev": "deno run --watch main.ts",
     "test": "deno test",
-    "publish": "deno publish"
+    "fmt": "deno fmt",
+    "lint": "deno lint",
+    "publish": {
+      "command": "deno publish --dry-run",
+      "dependencies": [
+        "test",
+        "lint"
+      ]
+    }
   },
   "imports": {
     "@cross/runtime": "jsr:@cross/runtime@^1.1.0",

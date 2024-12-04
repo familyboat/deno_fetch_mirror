@@ -1,16 +1,16 @@
 import { join } from "@std/path";
 import { which } from "@david/which";
 import { $ } from "@david/dax";
-import {CurrentOS} from '@cross/runtime';
-import { Command } from 'commander';
+import { CurrentOS } from "@cross/runtime";
+import { Command } from "commander";
 import { getName } from "./util.ts";
 
-const program = 'deno_fetch_mirror';
+const program = "deno_fetch_mirror";
 
-const cacheRootDir = '/tmp';
+const cacheRootDir = "/tmp";
 const cacheDirPrefix = `${program}_`;
 
-const fakeUrl = 'https://fake-url.deno.dev?url=';
+const fakeUrl = "https://fake-url.deno.dev?url=";
 
 /**
  * @param downloadUrl
@@ -23,7 +23,7 @@ async function upgrade(downloadUrl: string): Promise<void> {
     denoName = result.denoName;
   } catch {
     console.log(`Argument url is invalid: ${downloadUrl}`);
-    return
+    return;
   }
 
   const mirror = `${fakeUrl}${downloadUrl}`;
@@ -31,7 +31,7 @@ async function upgrade(downloadUrl: string): Promise<void> {
   const response = await fetch(mirror);
   if (response.status !== 200) {
     console.log(`Status text of the response is ${response.statusText}`);
-    return
+    return;
   }
   const tmpDir = await Deno.makeTempDir({
     dir: cacheRootDir,
@@ -65,36 +65,36 @@ async function upgrade(downloadUrl: string): Promise<void> {
 }
 
 async function clean() {
-  for await(const dirEntry of Deno.readDir(cacheRootDir)) {
+  for await (const dirEntry of Deno.readDir(cacheRootDir)) {
     if (dirEntry.isDirectory && dirEntry.name.startsWith(cacheDirPrefix)) {
       const fullpath = join(cacheRootDir, dirEntry.name);
       console.log(`Clean up ${fullpath}`);
       await Deno.remove(fullpath, {
-        recursive: true
-      })
+        recursive: true,
+      });
     }
   }
 }
 
 // Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
 if (import.meta.main) {
-  if (CurrentOS !== 'linux') {
+  if (CurrentOS !== "linux") {
     console.log(`deno_fetch_mirror is only supported in linux.`);
     Deno.exit(1);
   }
 
   const cli = new Command();
   cli.name(program)
-  .description('Fetch deno from mirror.');
+    .description("Fetch deno from mirror.");
 
-  cli.command('clean')
-  .description('Clean up the cache')
-  .action(clean)
+  cli.command("clean")
+    .description("Clean up the cache")
+    .action(clean);
 
-  cli.command('upgrade')
-  .description('Upgrade deno')
-  .argument('<url>', 'Url for specified deno version')
-  .action(upgrade);
+  cli.command("upgrade")
+    .description("Upgrade deno")
+    .argument("<url>", "Url for specified deno version")
+    .action(upgrade);
 
   cli.parse();
 }

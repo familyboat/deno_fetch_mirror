@@ -5,12 +5,12 @@ import { basename } from "@std/path";
  */
 export function getName(
   downloadUrl: string,
-): { 
-  archiveName: string; 
+): {
+  archiveName: string;
   denoName: string;
 } {
   const pathname = new URL(downloadUrl).pathname;
   const archiveName = basename(pathname);
 
-  return { archiveName, denoName: "deno"}; 
+  return { archiveName, denoName: "deno" };
 }
