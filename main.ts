@@ -1,3 +1,11 @@
+/**
+ * Utils for deno upgrade.
+ * Downloading deno from original source is too slow.
+ * So download it form mirror.
+ * 
+ * @module
+ */
+
 import { join } from "@std/path";
 import { which } from "@david/which";
 import { $ } from "@david/dax";
