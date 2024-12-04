@@ -4,6 +4,7 @@ import { $ } from "@david/dax";
 import { CurrentOS } from "@cross/runtime";
 import { Command } from "commander";
 import { getName } from "./util.ts";
+import json from "./deno.json" with { type: "json" };
 
 const program = "deno_fetch_mirror";
 
@@ -85,7 +86,8 @@ if (import.meta.main) {
 
   const cli = new Command();
   cli.name(program)
-    .description("Fetch deno from mirror.");
+    .description("Fetch deno from mirror.")
+    .version(json.version);
 
   cli.command("clean")
     .description("Clean up the cache")
