@@ -2,7 +2,7 @@
  * Utils for deno upgrade.
  * Downloading deno from original source is too slow.
  * So download it form mirror.
- * 
+ *
  * @module
  */
 

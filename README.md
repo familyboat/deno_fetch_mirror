@@ -12,7 +12,7 @@ deno install -A --global jsr:@familyboat/deno-fetch-mirror
 
 You can use it to upgrade deno or clean up cache.
 
-### Upgrade 
+### Upgrade
 
 ```sh
 deno-fetch-mirror upgrade <url>
