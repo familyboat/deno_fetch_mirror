@@ -1,6 +1,7 @@
 {
   "version": "4",
   "specifiers": {
+    "jsr:@cross/runtime@^1.1.0": "1.1.0",
     "jsr:@david/dax@0.42": "0.42.0",
     "jsr:@david/path@0.2": "0.2.0",
     "jsr:@david/which@~0.4.1": "0.4.1",
@@ -17,6 +18,9 @@
     "jsr:@std/streams@0.221": "0.221.0"
   },
   "jsr": {
+    "@cross/runtime@1.1.0": {
+      "integrity": "f35a3b768a9de125277329483b684062ffc9ee86f4449cb8b3d614adcad64ffb"
+    },
     "@david/dax@0.42.0": {
       "integrity": "0c547c9a20577a6072b90def194c159c9ddab82280285ebfd8268a4ebefbd80b",
       "dependencies": [
@@ -85,6 +89,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@cross/runtime@^1.1.0",
       "jsr:@david/dax@0.42",
       "jsr:@david/which@~0.4.1",
       "jsr:@std/assert@1",

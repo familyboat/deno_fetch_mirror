@@ -2,6 +2,7 @@ import { basename, extname, join } from "@std/path";
 import { which } from "@david/which";
 import { $ } from "@david/dax";
 import { parseArgs } from "@std/cli";
+import {CurrentOS} from '@cross/runtime';
 
 /**
  * 从 downloadUrl 中获取：文件名，可执行文件的名称，文件名的主干部分。
@@ -49,12 +50,12 @@ async function upgrade(downloadUrl: string): Promise<void> {
     const pathToDeno = await which("deno");
 
     if (pathToDeno) {
-      const result = await $`mv ${tmpDeno} ${pathToDeno}`;
+      const result = await $`cp ${tmpDeno} ${pathToDeno}`;
 
       if (result.code === 0) {
         console.log(`Upgrading deno successed!`);
       } else {
-        console.log(`mv error: ${result.stderr}`);
+        console.log(`cp error: ${result.stderr}`);
       }
     } else {
       console.log(
@@ -77,6 +78,11 @@ deno_upgrade --url <downloadUrl>
 
 // Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
 if (import.meta.main) {
+  if (CurrentOS !== 'linux') {
+    console.log(`deno_fetch_mirror is only supported in linux.`);
+    Deno.exit(1);
+  }
+
   const args = Deno.args;
   const { url } = parseArgs(args);
 
