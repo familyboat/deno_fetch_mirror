@@ -1,7 +1,12 @@
 {
+  "name": "@familyboat/deno-fetch-mirror",
+  "version": "0.0.0",
+  "exports": "./main.ts",
+  "license": "MIT",
   "tasks": {
     "dev": "deno run --watch main.ts",
-    "test": "deno test"
+    "test": "deno test",
+    "publish": "deno publish"
   },
   "imports": {
     "@cross/runtime": "jsr:@cross/runtime@^1.1.0",
