@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { getName } from "./main.ts";
+import { getName } from "./util.ts";
 
 Deno.test(function addTest() {
   const downloadUrl =

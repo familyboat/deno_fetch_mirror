@@ -1,23 +1,9 @@
-import { basename, join } from "@std/path";
+import { join } from "@std/path";
 import { which } from "@david/which";
 import { $ } from "@david/dax";
 import {CurrentOS} from '@cross/runtime';
 import { Command } from 'commander';
-
-/**
- * 从 downloadUrl 中获取：文件名，可执行文件的名称。
- */
-export function getName(
-  downloadUrl: string,
-): { 
-  archiveName: string; 
-  denoName: string;
-} {
-  const pathname = new URL(downloadUrl).pathname;
-  const archiveName = basename(pathname);
-
-  return { archiveName, denoName: "deno"}; 
-}
+import { getName } from "./util.ts";
 
 const program = 'deno_fetch_mirror';
 
