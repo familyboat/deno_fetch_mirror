@@ -3,7 +3,7 @@
  * Downloading deno from original source is too slow.
  * So download it form mirror.
  *
- * @module
+ * @author familyboat
  */
 
 import { join } from "@std/path";
