@@ -9,7 +9,7 @@
     "fmt": "deno fmt",
     "fmt:check": "deno fmt --check",
     "lint": "deno lint",
-    "publish": {
+    "prepublish": {
       "command": "deno publish --dry-run",
       "dependencies": [
         "test",
