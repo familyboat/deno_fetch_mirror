@@ -16,7 +16,7 @@ export function getName(
   const pathname = new URL(downloadUrl).pathname;
   const archiveName = basename(pathname);
 
-  return { archiveName, denoName: "deno"};
+  return { archiveName, denoName: "deno"}; 
 }
 
 const program = 'deno_fetch_mirror';
@@ -30,10 +30,23 @@ const fakeUrl = 'https://fake-url.deno.dev?url=';
  * @param downloadUrl
  */
 async function upgrade(downloadUrl: string): Promise<void> {
-  const { archiveName, denoName } = getName(downloadUrl);
+  let archiveName, denoName;
+  try {
+    const result = getName(downloadUrl);
+    archiveName = result.archiveName;
+    denoName = result.denoName;
+  } catch {
+    console.log(`Argument url is invalid: ${downloadUrl}`);
+    return
+  }
+
   const mirror = `${fakeUrl}${downloadUrl}`;
 
   const response = await fetch(mirror);
+  if (response.status !== 200) {
+    console.log(`Status text of the response is ${response.statusText}`);
+    return
+  }
   const tmpDir = await Deno.makeTempDir({
     dir: cacheRootDir,
     prefix: cacheDirPrefix,
