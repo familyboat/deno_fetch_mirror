@@ -8,6 +8,14 @@ Install it globally with deno:
 deno install -A --global jsr:@familyboat/deno-fetch-mirror
 ```
 
+## Update
+
+Update deno-fetch-mirror:
+
+```sh
+deno install -A --global --reload jsr:@familyboat/deno-fetch-mirror
+```
+
 ## How to use
 
 You can use it to upgrade deno or clean up cache.
