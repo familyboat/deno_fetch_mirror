@@ -7,12 +7,14 @@
     "dev": "deno run --watch main.ts",
     "test": "deno test",
     "fmt": "deno fmt",
+    "fmt:check": "deno fmt --check",
     "lint": "deno lint",
     "publish": {
       "command": "deno publish --dry-run",
       "dependencies": [
         "test",
-        "lint"
+        "lint",
+        "fmt:check"
       ]
     }
   },
