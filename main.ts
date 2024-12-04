@@ -66,7 +66,7 @@ async function upgrade(downloadUrl: string): Promise<void> {
       if (result.code === 0) {
         console.log(`Upgrading deno successed!`);
       } else {
-        console.log(`cp error: ${result.stderr}`);
+        console.log(`mv error: ${result.stderr}`);
       }
     } else {
       console.log(
