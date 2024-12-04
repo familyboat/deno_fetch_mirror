@@ -58,7 +58,7 @@ export async function upgrade(downloadUrl: string): Promise<void> {
         readLength += chunk.byteLength;
         const percent = (readLength / totalLength * 100).toFixed(2);
         const frame = encoder.encode(
-          `Download progress is ${percent}%; elapsed time is ${delta} s.`,
+          `Downloading progress is ${percent}%; elapsed time is ${delta} s.`,
         );
 
         const writeData = new Uint8Array(LINE_CLEAR.length + frame.length);
