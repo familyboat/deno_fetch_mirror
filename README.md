@@ -1,4 +1,4 @@
-It can only be supported in linux fro now.
+It can only be supported in linux for now.
 
 ## Install
 
