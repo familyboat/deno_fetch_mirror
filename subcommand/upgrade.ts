@@ -82,6 +82,9 @@ export async function upgrade(downloadUrl: string): Promise<void> {
     const pathToDeno = await which("deno");
 
     if (pathToDeno) {
+      // Can't use cp command,
+      // because cp command will result in "cp: Text file busy (os error 26)",
+      // when destination target is running.
       const result = await $`mv ${tmpDeno} ${pathToDeno}`;
 
       if (result.code === 0) {
