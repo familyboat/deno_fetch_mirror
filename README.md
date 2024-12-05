@@ -13,7 +13,7 @@ deno install -A --global jsr:@familyboat/deno-fetch-mirror
 Update deno-fetch-mirror:
 
 ```sh
-deno install -A --global --reload jsr:@familyboat/deno-fetch-mirror
+deno install -A --global --reload -f jsr:@familyboat/deno-fetch-mirror
 ```
 
 ## How to use
