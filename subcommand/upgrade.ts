@@ -5,10 +5,16 @@ import { toTransformStream } from "@std/streams";
 import { cacheDirPrefix, cacheRootDir, fakeUrl } from "../constant.ts";
 import { getName } from "../util.ts";
 
+import { instantiate } from "../lib/rs_lib.generated.js";
+
+const { get_download_url } = await instantiate();
+
 /**
- * @param downloadUrl
+ * @param version the stable version of deno to upgrade to
  */
-export async function upgrade(downloadUrl: string): Promise<void> {
+export async function upgrade(version: string): Promise<void> {
+  const downloadUrl = get_download_url(version);
+
   let archiveName, denoName;
   try {
     const result = getName(downloadUrl);

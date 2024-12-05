@@ -18,15 +18,13 @@ deno install -A --global --reload jsr:@familyboat/deno-fetch-mirror
 
 ## How to use
 
-You can use it to upgrade deno or clean up cache.
+You can use it to upgrade deno for stable version or clean up cache.
 
 ### Upgrade
 
 ```sh
-deno-fetch-mirror upgrade <url>
+deno-fetch-mirror upgrade <version>
 ```
-
-You can get url from `deno upgrade` command.
 
 ### CLean
 

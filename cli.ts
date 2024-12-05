@@ -16,5 +16,5 @@ cli.command("clean")
 
 cli.command("upgrade")
   .description("Upgrade deno")
-  .argument("<url>", "Url for specified deno version")
+  .argument("<version>", "Specified deno version to upgrade")
   .action(upgrade);

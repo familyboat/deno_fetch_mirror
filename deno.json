@@ -16,6 +16,9 @@
         "lint",
         "fmt:check"
       ]
+    },
+    "wasmbuild": {
+      "command": "deno run -A jsr:@deno/wasmbuild"
     }
   },
   "imports": {
