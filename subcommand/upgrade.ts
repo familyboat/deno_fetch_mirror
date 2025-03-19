@@ -27,6 +27,8 @@ export async function upgrade(version: string): Promise<void> {
 
   const mirror = `${fakeUrl}${downloadUrl}`;
 
+  console.log(`Downloading deno from ${mirror}`);
+
   const startTime = Date.now();
 
   const response = await fetch(mirror);
